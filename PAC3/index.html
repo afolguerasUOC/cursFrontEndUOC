@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fetch</title>
+    
+</head>
+<body>
+
+    <p   id="Nom0">Nom0</p> 
+    <img id="foto0"></img>
+    <p   id="Nom1">Nom1</p>
+    <img id="foto1"></img>
+    <p   id="Nom2">Nom2</p>
+    <img id="foto2"></img>
+    <p   id="Nom3">Nom3</p>
+    <img id="foto3"></img>
+    <p   id="Nom4">Nom4</p>
+    <img id="foto4"></img>
+    <p   id="Nom5">Nom5</p>
+    <img id="foto5"></img>
+    <p   id="Nom6">Nom6</p>
+    <img id="foto6"></img>
+    <p   id="Nom7">Nom7</p>
+    <img id="foto7"></img>
+    <p   id="Nom8">Nom8</p>
+    <img id="foto8"></img>
+    <p   id="Nom9">Nom9</p>
+    <img id="foto9"></img>
+
+    <button onClick="fetchAPI()">Click to llista de Pokemon</button>
+
+    <script>
+        const numPokemon = new Array();
+        let url = "https://pokeapi.co/api/v2/pokemon";
+
+        function fetchAPI() 
+        {
+            fetch(url)
+            .then (x=> 
+            {
+                return x.json();
+            })
+            .then (y=> 
+            {
+                creaArrayPokemons();
+                for (i=0;i<=9;i++)
+                {
+                    pokemon = numPokemon[i];
+                    let nomPokemon = y.results[pokemon].name;
+                    let urlPokemon = url+'/'+y.results[pokemon].name;
+                    let id="foto"+i;
+                    document.getElementById("Nom"+i).innerHTML = nomPokemon;
+                    console.dir("foto"+i);
+                    fetch(urlPokemon)
+                    .then (x=> {
+                        return x.json();
+                        })
+                    .then (y=> {
+                        document.getElementById(id).src = y.sprites.front_default;
+                    })
+                }
+            });  
+
+            function creaArrayPokemons() 
+            {   
+                //funció que genera números aleatoris i els posa en un array que després recoreré per descarregar els pokemon
+                a=true;
+                while (a)
+                {
+                    numAleatori=Math.round(Math.random()*19);
+                    found = numPokemon.indexOf(numAleatori);
+                    if (found==-1){
+                        numPokemon.push(numAleatori);
+                    }
+                    if (numPokemon.length>=10)
+                        a=false;
+                }
+                console.dir(numPokemon);
+            }
+        }
+    </script>
+</body>
+</html>
